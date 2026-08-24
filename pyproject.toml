@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=69,<81"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reverse-auction-assignment"
+version = "0.1.0"
+description = "Data-free reverse-auction assignment reference for human-robot order picking"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Godpa-juke"}]
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src"]
