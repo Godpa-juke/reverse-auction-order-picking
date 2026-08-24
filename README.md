@@ -4,21 +4,6 @@ Executable research code for **global human-to-robot assignment in collaborative
 
 The implementation extends [RWARE](https://github.com/semitable/robotic-warehouse) with human pickers, robot requests, obstacle-aware travel costs, deterministic Bertsekas-style auction matching, and guarded re-auction.
 
-[![Reverse Auction 45-degree warehouse demo](media/reverse_auction_poster.png)](media/reverse_auction_demo.mp4)
-
-[Watch or download the Reverse Auction MP4](media/reverse_auction_demo.mp4)
-
-The six-second synthetic rollout uses the repository's actual cost-matrix builder and Bertsekas auction solver. Robots first travel to their pick locations; the reactive reverse auction dispatches H1/H2 after the robot-arrival gate. The 45-degree isometric geometry is synthetic and contains no private warehouse data.
-
-Reproduce it with:
-
-```bash
-python scripts/render_synthetic_warehouse.py \
-  --method auction \
-  --output media/reverse_auction_demo.mp4 \
-  --poster media/reverse_auction_poster.png
-```
-
 ## What you can run
 
 After cloning, you can:
@@ -71,8 +56,7 @@ Ablation strategies keep the same simulator path while independently removing ur
 | `rware/core/map_dsl.py` | synthetic/public map parser and traffic constraints |
 | `rware/warehouse.py` | multi-agent warehouse environment |
 | `rware/algorithm/path_planning/` | A*, JPS, and modified JPS planners |
-| `scripts/run_synthetic_assignment.py` | deterministic no-data assignment example |
-| `scripts/render_synthetic_warehouse.py` | actual-policy 45-degree isometric MP4 renderer |
+| `scripts/run_synthetic_assignment.py` | deterministic no-data example |
 | `tests/test_auction_ablation.py` | solver and cost-term contracts |
 | `tests/test_engine_enforcement.py` | inline-map movement constraints |
 

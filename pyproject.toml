@@ -16,7 +16,6 @@ dependencies = [
   "networkx>=3,<4",
   "numpy>=2,<3",
   "pandas>=2,<3",
-  "pillow>=10,<13",
   "pygame>=2.6,<3",
   "pyglet>=1.5,<3",
   "pyyaml>=6,<7",
