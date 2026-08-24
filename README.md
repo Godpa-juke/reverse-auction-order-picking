@@ -4,6 +4,24 @@ Executable research code for **global human-to-robot assignment in collaborative
 
 The implementation extends [RWARE](https://github.com/semitable/robotic-warehouse) with human pickers, robot requests, obstacle-aware travel costs, deterministic Bertsekas-style auction matching, and guarded re-auction.
 
+## Isaac Sim rollout
+
+[![Reverse Auction actual Isaac Sim rollout](media/reverse_auction_isaac_sim.png)](media/reverse_auction_isaac_sim.mp4)
+
+The video is RGB captured from an actual Isaac Sim/Isaac Lab `Camera` on a procedural USD warehouse stage. It executes this repository's `AuctionAssignmentStrategy` cost matrix and Bertsekas solver. Robots first reach their pick targets; only then does the reactive auction dispatch the two pickers. The title/status overlay is applied to the captured Isaac RGB frames.
+
+```bash
+REPO="$PWD"
+cd /path/to/IsaacLab
+PYTHONPATH="$REPO:$PWD/source/isaaclab:$PWD/source/isaaclab_assets:$PWD/source/isaaclab_tasks" \
+  ./isaaclab.sh -p "$REPO/scripts/render_isaac_warehouse.py" \
+  --method auction --headless --enable_cameras --device cuda:0 \
+  --output "$REPO/media/reverse_auction_isaac_sim.mp4" \
+  --poster "$REPO/media/reverse_auction_isaac_sim.png"
+```
+
+The machine-readable run receipt is [`media/reverse_auction_isaac_sim.json`](media/reverse_auction_isaac_sim.json). This is a qualitative synthetic-layout demonstration, not a private-facility throughput experiment.
+
 ## What you can run
 
 After cloning, you can:
@@ -57,6 +75,7 @@ Ablation strategies keep the same simulator path while independently removing ur
 | `rware/warehouse.py` | multi-agent warehouse environment |
 | `rware/algorithm/path_planning/` | A*, JPS, and modified JPS planners |
 | `scripts/run_synthetic_assignment.py` | deterministic no-data example |
+| `scripts/render_isaac_warehouse.py` | actual Isaac Sim USD-stage rollout and Camera capture |
 | `tests/test_auction_ablation.py` | solver and cost-term contracts |
 | `tests/test_engine_enforcement.py` | inline-map movement constraints |
 
