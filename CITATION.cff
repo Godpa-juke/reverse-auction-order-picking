@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite this repository and retain the upstream RWARE attribution."
+title: "Reverse-Auction Order Picking"
+type: software
+authors:
+  - family-names: "Kim"
+    given-names: "Jiwook"
+version: 0.1.0
+date-released: 2026-08-24
+url: "https://github.com/Godpa-juke/reverse-auction-order-picking"
+repository-code: "https://github.com/Godpa-juke/reverse-auction-order-picking"
+license: MIT

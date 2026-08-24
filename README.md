@@ -1,70 +1,101 @@
-# Reverse-Auction Assignment for Human–Robot Order Picking
+# Reverse-Auction Order Picking
 
-A small, data-free reference implementation of one-to-one worker-to-robot assignment using a Bertsekas-style auction solver.
+Executable research code for **global human-to-robot assignment in collaborative order-picking systems**. This repository contains the actual warehouse simulator integration—not a standalone pseudocode translation or a paper file listing.
 
-This repository explains and implements the **reactive assignment baseline** used in collaborative order-picking research: eligible workers bid for serviceable robot requests using a configurable pairwise cost. The code is independent of any warehouse layout, order file, simulator output, manuscript, or measured result.
+The implementation extends [RWARE](https://github.com/semitable/robotic-warehouse) with human pickers, robot requests, obstacle-aware travel costs, deterministic Bertsekas-style auction matching, and guarded re-auction.
 
-## What is included
+## What you can run
 
-- immutable worker and robot-request inputs;
-- configurable travel, wait, service, and zone-mismatch costs;
-- a rectangular one-to-one auction solver;
-- deterministic tie-breaking;
-- toy unit tests for assignment invariants.
+After cloning, you can:
 
-## What is not included
+1. inspect the exact bid-cost construction used by the simulator;
+2. compare auction matching with a greedy solver on the same value matrix;
+3. instantiate the synthetic RWARE map used by the contract tests;
+4. run the assignment, map-DSL, and engine-enforcement tests without private data.
 
-- papers or PDFs;
-- LaTeX sources, tables, figures, or reported numbers;
-- warehouse layouts or order workloads;
-- raw or aggregate experiment data;
-- private simulator code or Git history.
+## Quick start
 
-## Install
+Python 3.10–3.13 is supported.
 
 ```bash
-python -m pip install -e .
+git clone https://github.com/Godpa-juke/reverse-auction-order-picking.git
+cd reverse-auction-order-picking
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -e '.[dev]'
+python scripts/run_synthetic_assignment.py
+pytest
 ```
 
-## Example
+The example prints a real cost matrix produced by `AuctionAssignmentStrategy` and the robot index selected for each human by both auction and greedy solvers. It is deterministic and needs no warehouse dataset.
 
-```python
-from reverse_auction_assignment import (
-    CostWeights,
-    RobotRequest,
-    Worker,
-    assign,
-)
+## Method implemented here
 
-workers = [
-    Worker("w0", position=(0, 0)),
-    Worker("w1", position=(8, 0)),
-]
-requests = [
-    RobotRequest("r0", position=(1, 0)),
-    RobotRequest("r1", position=(7, 0)),
-]
+For each candidate human `h` and robot request `r`, the simulator builds a cost containing:
 
-pairs = assign(workers, requests, weights=CostWeights())
-print(pairs)
-# [('w0', 'r0'), ('w1', 'r1')]
-```
+- obstacle-aware human travel distance;
+- estimated robot service time;
+- robot waiting-time urgency;
+- human waiting-time fairness;
+- an optional out-of-zone penalty.
 
-## Cost model
+The solver maximizes the negative cost under one-to-one assignment. Re-auction is guarded by:
 
-For a worker-request pair, the default cost is:
+- **arrival lock** `tau_lock`: do not switch an assignment near arrival;
+- **minimum gain** `delta_gain`: switch only when the cost improvement is material;
+- **switch budget** `max_reassign`: cap reassignment count per request.
 
-```text
-travel_weight × Manhattan distance
-+ robot_wait_weight × accumulated robot wait
-+ service_weight × expected service duration
-+ zone penalty when the request lies outside the worker's allowed nodes
-```
+Ablation strategies keep the same simulator path while independently removing urgency, fairness, service cost, zone handling, re-auction, or the auction solver itself.
 
-Applications can supply their own distance function without changing the auction solver.
+## Code map
 
-## Test
+| Path | Purpose |
+|---|---|
+| `rware/engine/human_assignment.py` | snapshots, cost matrix, auction/greedy solvers, re-auction guards, strategy registry |
+| `rware/engine/warehouse_engine.py` | live simulator integration and assignment refresh |
+| `rware/core/map_dsl.py` | synthetic/public map parser and traffic constraints |
+| `rware/warehouse.py` | multi-agent warehouse environment |
+| `rware/algorithm/path_planning/` | A*, JPS, and modified JPS planners |
+| `scripts/run_synthetic_assignment.py` | deterministic no-data example |
+| `tests/test_auction_ablation.py` | solver and cost-term contracts |
+| `tests/test_engine_enforcement.py` | inline-map movement constraints |
+
+## Public reproducibility boundary
+
+Included:
+
+- executable simulator and assignment source;
+- an inline synthetic warehouse layout;
+- deterministic no-data example;
+- behavioral tests;
+- license, citation, and source provenance.
+
+Not included:
+
+- real warehouse orders or operational records;
+- facility-specific maps and precomputed path arrays;
+- raw experiment outputs, checkpoints, manuscripts, or internal paths.
+
+The repository therefore supports **algorithm inspection, extension, synthetic execution, and unit-level reproduction**. It does not claim to reproduce private-site throughput numbers from public inputs.
+
+## Tests
 
 ```bash
-python -m unittest discover -s tests -v
+pytest
 ```
+
+The public test set is intentionally asset-independent. It executes behavior rather than checking source text:
+
+- auction versus greedy assignment;
+- exact ablation cost relationships;
+- strategy registration and re-auction overrides;
+- map-overlay parsing;
+- robot/human movement constraints on an inline synthetic map.
+
+## Extending the artifact
+
+New assignment policies implement `HumanAssignmentStrategy` and register through `@register_strategy`. To compare policies fairly, use the shared obstacle-aware distance helpers instead of introducing a policy-specific distance proxy.
+
+## Provenance and license
+
+See [`PROVENANCE.md`](PROVENANCE.md) for the canonical export revision. This project is a modified derivative of RWARE. The upstream MIT copyright and license are preserved in [`LICENSE`](LICENSE).

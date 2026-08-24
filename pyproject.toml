@@ -1,16 +1,36 @@
 [build-system]
-requires = ["setuptools>=69,<81"]
+requires = ["setuptools>=75,<82", "wheel>=0.44,<1"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "reverse-auction-assignment"
+name = "reverse-auction-order-picking"
 version = "0.1.0"
-description = "Data-free reverse-auction assignment reference for human-robot order picking"
+description = "Executable RWARE simulator code for reverse-auction human-robot order-picking assignment"
 readme = "README.md"
-requires-python = ">=3.10"
-license = {text = "MIT"}
-authors = [{name = "Godpa-juke"}]
-dependencies = []
+requires-python = ">=3.10,<3.14"
+license = {file = "LICENSE"}
+authors = [{name = "Jiwook Kim"}]
+dependencies = [
+  "gymnasium>=1.2,<2",
+  "matplotlib>=3.8,<4",
+  "networkx>=3,<4",
+  "numpy>=2,<3",
+  "pandas>=2,<3",
+  "pygame>=2.6,<3",
+  "pyglet>=1.5,<3",
+  "pyyaml>=6,<7",
+  "pyzmq>=26,<28",
+  "seaborn>=0.13,<1",
+  "six>=1.16,<2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10"]
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["."]
+include = ["rware*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

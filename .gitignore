@@ -1,6 +1,11 @@
 __pycache__/
 *.py[cod]
 .venv/
+.pytest_cache/
+*.egg-info/
 build/
 dist/
-*.egg-info/
+rware/data/**/*.npy
+rware/data/**/*.csv
+rware/data/**/result*/
+results/
