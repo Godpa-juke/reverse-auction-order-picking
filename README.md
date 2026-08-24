@@ -6,9 +6,9 @@ The implementation extends [RWARE](https://github.com/semitable/robotic-warehous
 
 ## Isaac Sim rollout
 
-[![Reverse Auction actual Isaac Sim rollout](media/reverse_auction_isaac_sim.png)](media/reverse_auction_isaac_sim.mp4)
+![Reverse Auction actual Isaac Sim rollout](media/reverse_auction_isaac_sim.gif)
 
-The video is RGB captured from an actual Isaac Sim/Isaac Lab `Camera` on a procedural USD warehouse stage. It executes this repository's `AuctionAssignmentStrategy` cost matrix and Bertsekas solver. Robots first reach their pick targets; only then does the reactive auction dispatch the two pickers. The title/status overlay is applied to the captured Isaac RGB frames.
+The looping GIF is derived from RGB captured by an actual Isaac Sim/Isaac Lab `Camera` on a procedural USD warehouse stage. It executes this repository's `AuctionAssignmentStrategy` cost matrix and Bertsekas solver. Robots first reach their pick targets; only then does the reactive auction dispatch the two pickers. The title/status overlay is applied to the captured Isaac RGB frames.
 
 ```bash
 REPO="$PWD"
