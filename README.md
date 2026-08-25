@@ -8,7 +8,7 @@ The implementation extends [RWARE](https://github.com/semitable/robotic-warehous
 
 ![Canonical Site-A AHEAD 45-degree Isaac Sim rollout](media/canonical_sitea_ahead_45deg.gif)
 
-This shared environment demo mirrors the canonical comparison setup: Site-A batched orders, Batch-Random sequencing, 8 human pickers, and 20 robots. The displayed motion is produced by the real RWARE event loop using the AHEAD `rv_static` policy and rendered by an Isaac Sim/Isaac Lab `Camera` at a fixed 45-degree downward angle; **it is an environment-level demo, not a Reverse Auction result**. The method-specific Reverse Auction rollout remains below. The operational orders, facility trace, and layout data are not included in this public repository.
+Canonical Site-A AHEAD rollout in Isaac Sim, shown from a 45° view.
 
 ## Isaac Sim rollout
 
