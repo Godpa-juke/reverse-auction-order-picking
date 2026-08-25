@@ -4,6 +4,12 @@ Executable research code for **global human-to-robot assignment in collaborative
 
 The implementation extends [RWARE](https://github.com/semitable/robotic-warehouse) with human pickers, robot requests, obstacle-aware travel costs, deterministic Bertsekas-style auction matching, and guarded re-auction.
 
+## Canonical Site-A experiment environment
+
+![Canonical Site-A AHEAD 45-degree Isaac Sim rollout](media/canonical_sitea_ahead_45deg.gif)
+
+This shared environment demo mirrors the canonical comparison setup: Site-A batched orders, Batch-Random sequencing, 8 human pickers, and 20 robots. The displayed motion is produced by the real RWARE event loop using the AHEAD `rv_static` policy and rendered by an Isaac Sim/Isaac Lab `Camera` at a fixed 45-degree downward angle; **it is an environment-level demo, not a Reverse Auction result**. The method-specific Reverse Auction rollout remains below. The operational orders, facility trace, and layout data are not included in this public repository.
+
 ## Isaac Sim rollout
 
 ![Reverse Auction actual Isaac Sim rollout](media/reverse_auction_isaac_sim.gif)
